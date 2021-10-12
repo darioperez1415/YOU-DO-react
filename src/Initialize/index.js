@@ -4,7 +4,7 @@ import Todo from '../components/Todo';
 import TodoForm from '../components/TodoForm';
 
 function Initialize() {
-  const [todos, setTodos] = useState([]); 
+  const [todos, setTodos] = useState([]);
 
   useEffect(() => {
     getTodos().then(setTodos);
@@ -13,8 +13,7 @@ function Initialize() {
     <>
       <TodoForm />
       {todos.map((todo) => (
-        <Todo key={todo.name} todo={todo} />))
-      }
+        <Todo key={todo.name} todo={todo} />))}
     </>
   );
 }
