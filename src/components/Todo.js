@@ -6,7 +6,7 @@ import { deleteTodos } from '../api/data/todoData';
 export default function Todo({ todo, setTodos }) {
   const handleClick = (method) => {
     if (method === 'delete') {
-      deleteTodos(todo.firbaseKey).then(setTodos);
+      deleteTodos(todo.firebaseKey).then(setTodos);
     }
   };
 
@@ -34,7 +34,7 @@ Todo.propTypes = {
     name: PropTypes.string,
     complete: PropTypes.bool,
     date: PropTypes.string,
-    firbaseKey: PropTypes.string,
+    firebaseKey: PropTypes.string,
     uid: PropTypes.string,
   }).isRequired,
   setTodos: PropTypes.func.isRequired,
