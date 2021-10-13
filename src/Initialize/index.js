@@ -11,9 +11,13 @@ function Initialize() {
   }, []);
   return (
     <>
-      <TodoForm />
+      <TodoForm setTodos={setTodos} />
       {todos.map((todo) => (
-        <Todo key={todo.name} todo={todo} />))}
+        <Todo
+          key={todo.firebaseKey}
+          todo={todo}
+          setTodos={setTodos}
+        />))}
     </>
   );
 }
