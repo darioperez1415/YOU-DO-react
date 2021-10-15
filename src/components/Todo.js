@@ -1,22 +1,42 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Alert } from 'reactstrap';
-import { deleteTodos } from '../api/data/todoData';
+import { deleteTodos, updateTodo } from '../api/data/todoData';
 
-export default function Todo({ todo, setTodos }) {
+export default function Todo({ todo, setTodos, setEditItem }) {
   const handleClick = (method) => {
     if (method === 'delete') {
       deleteTodos(todo.firebaseKey).then(setTodos);
+    } else {
+      updateTodo({ ...todo, complete: true }).then(setTodos);
     }
   };
 
   return (
-    <>
-      <Alert color="light">
-        <button className="btn btn-success" type="button">
+    <div className="alert alert-light" role="alert">
+      {todo.complete ? (
+        <button className="btn btn-success" type="button" disabled>
+          <i className="fas fa-check-circle fa-2x" />
+        </button>
+      ) : (
+        <button
+          onClick={() => handleClick('complete')}
+          className="btn btn-success"
+          type="button"
+        >
           COMPLETE
         </button>
-        {todo.name}
+      )}
+      <h5>{todo.name}</h5>
+      <div>
+        {!todo.complete && (
+          <button
+            onClick={() => setEditItem(todo)}
+            className="btn btn-info"
+            type="button"
+          >
+            EDIT
+          </button>
+        )}
         <button
           onClick={() => handleClick('delete')}
           className="btn btn-danger"
@@ -24,8 +44,8 @@ export default function Todo({ todo, setTodos }) {
         >
           DELETE
         </button>
-      </Alert>
-    </>
+      </div>
+    </div>
   );
 }
 
@@ -38,4 +58,5 @@ Todo.propTypes = {
     uid: PropTypes.string,
   }).isRequired,
   setTodos: PropTypes.func.isRequired,
+  setEditItem: PropTypes.func.isRequired,
 };

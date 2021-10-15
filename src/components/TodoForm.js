@@ -1,11 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { createTodo } from '../api/data/todoData';
+import { createTodo, updateTodo } from '../api/data/todoData';
 
-export default function TodoForm({ obj = {}, setTodos }) {
-  const [formInput, setFormInput] = useState({
-    name: obj.name || '',
-  });
+// Create an initial state object so that it can be reused in the component
+const initialState = {
+  name: '',
+  complete: false,
+  uid: '',
+};
+export default function TodoForm({ obj, setTodos, setEditItem }) {
+  // set the default state to the initialState object
+  const [formInput, setFormInput] = useState(initialState);
+
+  // when the component mounts, check if a firebasekey exists. If it does, set the value of formInput to the obj values
+  useEffect(() => {
+    if (obj.firebaseKey) {
+      setFormInput({
+        name: obj.name,
+        firebaseKey: obj.firebaseKey,
+        complete: obj.complete,
+        date: obj.date,
+        uid: obj.uid,
+      });
+    }
+    // rerender the component if the obj value is different
+  }, [obj]);
+
+  // On call of the resetForm function, reset the state to the initialState
+  const resetForm = () => {
+    setFormInput({ ...initialState });
+    setEditItem({});
+  };
+
   const handleChange = (e) => {
     setFormInput((prevState) => ({
       ...prevState,
@@ -13,36 +39,58 @@ export default function TodoForm({ obj = {}, setTodos }) {
     }));
   };
 
+  // Since we are using this form for both creating and updating, we need to use logic to determine which method to run. If there is a firebaseKey, we know that we are updating.
   const handleSubmit = (e) => {
     e.preventDefault();
-    createTodo(formInput).then(setTodos);
+    if (obj.firebaseKey) {
+      // update the todo
+      updateTodo(formInput).then((todos) => {
+        setTodos(todos);
+        resetForm();
+      });
+    } else {
+      createTodo({ ...formInput, date: new Date() }).then((todos) => {
+        setTodos(todos);
+        resetForm();
+      });
+    }
   };
 
   return (
-    <>
+    <div>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="name">
-          Name
+        <div className="mb-3 d-flex">
           <input
-            name="name"
+            className="form-control form-control-lg me-1"
+            type="text"
             id="name"
+            name="name"
             value={formInput.name}
             onChange={handleChange}
+            placeholder="ADD A YOU-DO"
             required
           />
-        </label>
-        <button type="submit">Submit</button>
+          <button className="btn btn-success" type="submit">
+            {obj.firebaseKey ? 'Update' : 'Submit'}
+          </button>
+        </div>
       </form>
-    </>
+    </div>
   );
 }
-// PROP VALIDATION
+
 TodoForm.propTypes = {
   obj: PropTypes.shape({
     name: PropTypes.string,
-    id: PropTypes.string,
+    complete: PropTypes.bool,
+    date: PropTypes.string,
+    firebaseKey: PropTypes.string,
+    uid: PropTypes.string,
   }),
   setTodos: PropTypes.func.isRequired,
+  setEditItem: PropTypes.func.isRequired,
 };
 
-TodoForm.defaultProps = { obj: {} };
+TodoForm.defaultProps = {
+  obj: {},
+};
