@@ -67,7 +67,7 @@ export default function TodoForm({ obj, setTodos, setEditItem }) {
             name="name"
             value={formInput.name}
             onChange={handleChange}
-            placeholder="ADD A YOU-DO"
+            placeholder="ADD A TO-DO"
             required
           />
           <button className="btn btn-success" type="submit">
