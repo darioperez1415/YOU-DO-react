@@ -1,24 +1,7 @@
 import React, { useEffect, useState } from 'react';
-// import styled from 'styled-components';
 import { getTodos } from '../api/data/todoData';
 import Todo from '../components/Todo';
 import TodoForm from '../components/TodoForm';
-
-// const Container = styled.div`
-//   width: 60%;
-//   margin: auto;
-//   padding: 50px 0;
-//   h1 {
-//     color: white;
-//     text-align: center;
-//     font-size: 64px;
-//     font-weight: 400;
-//   }
-//   h3 {
-//     color: lightgrey;
-//     text-align: center;
-//   }
-// `;
 
 function Initialize() {
   const [todos, setTodos] = useState([]);
