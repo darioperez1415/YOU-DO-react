@@ -2,17 +2,16 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { createTodo, updateTodo } from '../api/data/todoData';
 
-// Create an initial state object so that it can be reused in the component
+// Itial state of the applications
 const initialState = {
   name: '',
   complete: false,
   uid: '',
 };
+// Changes in State! From form passing to useState
 export default function TodoForm({ obj, setTodos, setEditItem }) {
-  // set the default state to the initialState object
   const [formInput, setFormInput] = useState(initialState);
 
-  // when the component mounts, check if a firebasekey exists. If it does, set the value of formInput to the obj values
   useEffect(() => {
     if (obj.firebaseKey) {
       setFormInput({
@@ -23,10 +22,8 @@ export default function TodoForm({ obj, setTodos, setEditItem }) {
         uid: obj.uid,
       });
     }
-    // rerender the component if the obj value is different
   }, [obj]);
-
-  // On call of the resetForm function, reset the state to the initialState
+  // Restets to initial state and spreeds new obj
   const resetForm = () => {
     setFormInput({ ...initialState });
     setEditItem({});
@@ -39,7 +36,6 @@ export default function TodoForm({ obj, setTodos, setEditItem }) {
     }));
   };
 
-  // Since we are using this form for both creating and updating, we need to use logic to determine which method to run. If there is a firebaseKey, we know that we are updating.
   const handleSubmit = (e) => {
     e.preventDefault();
     if (obj.firebaseKey) {

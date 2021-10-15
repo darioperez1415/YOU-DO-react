@@ -1,7 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { deleteTodos, updateTodo } from '../api/data/todoData';
 
+const ButtonStyle = styled.div`
+display: flex;
+  justify-content: space-between;
+  flex-flow: row wrap;
+  align-items: center;
+
+  h5 {
+    margin: auto 20px;
+    flex-grow: 1.5; 
+  }
+
+  button {
+    color: white;
+  }
+  .btn-danger {
+    margin-left: 5px;
+  }
+
+  .btn-sucess {
+    margin-left: 5px;
+
+  .btn-info {
+    margin-left: 5px;
+  }    
+  }
+`;
 export default function Todo({ todo, setTodos, setEditItem }) {
   const handleClick = (method) => {
     if (method === 'delete') {
@@ -12,9 +39,14 @@ export default function Todo({ todo, setTodos, setEditItem }) {
   };
 
   return (
-    <div className="alert alert-light" role="alert">
+    <ButtonStyle className="alert alert-light" role="alert">
+      <h5>{todo.name}</h5>
       {todo.complete ? (
-        <button className="btn btn-success" type="button" disabled>
+        <button
+          className="btn btn-success"
+          type="button"
+          disabled
+        >
           <i className="fas fa-check-circle fa-2x" />
         </button>
       ) : (
@@ -26,26 +58,23 @@ export default function Todo({ todo, setTodos, setEditItem }) {
           COMPLETE
         </button>
       )}
-      <h5>{todo.name}</h5>
-      <div>
-        {!todo.complete && (
-          <button
-            onClick={() => setEditItem(todo)}
-            className="btn btn-info"
-            type="button"
-          >
-            EDIT
-          </button>
-        )}
+      {!todo.complete && (
         <button
-          onClick={() => handleClick('delete')}
-          className="btn btn-danger"
+          onClick={() => setEditItem(todo)}
+          className="btn btn-info"
           type="button"
         >
-          DELETE
+          EDIT
         </button>
-      </div>
-    </div>
+      )}
+      <button
+        onClick={() => handleClick('delete')}
+        className="btn btn-danger"
+        type="button"
+      >
+        DELETE
+      </button>
+    </ButtonStyle>
   );
 }
 
