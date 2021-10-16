@@ -1,5 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getCompletedTodos, deleteCompletedTodos } from '../api/data/todoData';
 
 export default function Completed() {
-  return <div> Welcome to Completed!</div>;
+  const [completedTodos, setCompletedTodos] = useState([]);
+
+  useEffect(() => {
+    getCompletedTodos().then(setCompletedTodos);
+  }, []);
+
+  const handleClick = (key) => {
+    deleteCompletedTodos(key).then(setCompletedTodos);
+  };
+
+  return (
+    <div>
+      {completedTodos.map((completedTodo) => (
+        <div
+          key={completedTodo.firebaseKey}
+          className="d-flex justify-content-between alert alert-light"
+          role="alert"
+        >
+          {completedTodo.name}
+          <button
+            onClick={() => handleClick(completedTodo.firebaseKey)}
+            className=" btn btn-danger"
+            type="button"
+          >
+            delete
+          </button>
+        </div>
+      ))}
+    </div>
+  );
 }

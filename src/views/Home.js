@@ -24,7 +24,7 @@ export default function Home({ todos, setTodos, setEditItem }) {
   );
 }
 
-Home.PropTypes = {
+Home.propTypes = {
   todos: PropTypes.arrayOf(PropTypes.ojbect).isRequired,
   setTodos: PropTypes.func.isRequired,
   setEditItem: PropTypes.func.isRequired,

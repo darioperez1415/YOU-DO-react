@@ -18,7 +18,9 @@ export default function Routes({ todos, setTodos, setEditItem }) {
         <Route
           exact
           path="/completed"
-          component={() => <Completed />}
+          component={() => (
+            <Completed todos={todos} setTodos={setTodos} />
+          )}
         />
       </Switch>
     </div>

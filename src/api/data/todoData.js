@@ -16,9 +16,15 @@ const getTodos = (value) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const getCompletedTods = () => new Promise((resolve, reject) => {
+const getCompletedTodos = () => new Promise((resolve, reject) => {
   getTodos(true)
     .then((todoArray) => resolve(todoArray))
+    .catch(reject);
+});
+
+const deleteCompletedTodos = (firebaseKey) => new Promise((resolve, reject) => {
+  axios.delete(`${baseURL}/todos${firebaseKey}.json`)
+    .then(() => getCompletedTodos().then(resolve))
     .catch(reject);
 });
 
@@ -50,5 +56,5 @@ const updateTodo = (todoObj) => new Promise((resolve, reject) => {
 });
 
 export {
-  getTodos, createTodo, deleteTodos, updateTodo, getCompletedTods,
+  getTodos, createTodo, deleteTodos, updateTodo, getCompletedTodos, deleteCompletedTodos,
 };
