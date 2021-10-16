@@ -31,7 +31,7 @@ function Initialize() {
 
   return (
     <ContainerStyle>
-      <Navigation/>
+      <Navigation />
       <h1>YOU-DO-React</h1>
       <TodoForm obj={editItem} setTodos={setTodos} setEditItem={setEditItem} />
       <div className="mt-5">
