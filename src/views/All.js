@@ -20,8 +20,12 @@ export default function All() {
           role="alert"
         >
           {allTodo.name}
-           <button onClick={() => handleClick(allTodo.firebaseKey)} className="btn btn-button" type="button">
-           DELETE
+          <button
+            onClick={() => handleClick(allTodo.firebaseKey)}
+            className="btn btn-button"
+            type="button"
+          >
+            DELETE
           </button>
         </div>
       ))}
