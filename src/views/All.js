@@ -1,34 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { getAllTodos, deleteAnyTodo } from '../api/data/todoData';
+import PropTypes from 'prop-types';
+import { getAllTodos } from '../api/data/todoData';
+import Todo from '../components/Todo';
 
-export default function All() {
-  const [allTodos, setallTodos] = useState([]);
+export default function All({ todos, setTodos, setEditItem }) {
+  const [allTodos, setAllTodos] = useState([]);
 
   useEffect(() => {
-    getAllTodos().then(setallTodos);
-  }, []);
-
-  const handleClick = (firebaseKey) => {
-    deleteAnyTodo(firebaseKey).then(setallTodos);
-  };
+    let isMounted = true;
+    getAllTodos(todos).then((todoArray) => {
+      if (isMounted) setAllTodos(todoArray);
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, [todos]);
 
   return (
     <div>
-      {allTodos.map((allTodo) => (
-        <div
-          className="d-flex justify-content-between alert alert-light"
-          role="alert"
-        >
-          {allTodo.name}
-          <button
-            onClick={() => handleClick(allTodo.firebaseKey)}
-            className="btn btn-button"
-            type="button"
-          >
-            DELETE
-          </button>
-        </div>
+      {allTodos.map((todo) => (
+        <Todo
+          key={todo.firebaseKey}
+          todo={todo}
+          setTodos={setTodos}
+          setEditItem={setEditItem}
+        />
       ))}
     </div>
   );
 }
+
+All.propTypes = {
+  todos: PropTypes.arrayOf(PropTypes.object).isRequired,
+  setTodos: PropTypes.func.isRequired,
+  setEditItem: PropTypes.func.isRequired,
+};

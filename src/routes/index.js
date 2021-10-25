@@ -27,7 +27,7 @@ export default function Routes({ todos, setTodos, setEditItem }) {
           exact
           path="/all"
           component={() => (
-            <All todos={todos} setTodos={setTodos} />
+            <All todos={todos} setTodos={setTodos} setEditItem={setEditItem} />
           )}
         />
       </Switch>

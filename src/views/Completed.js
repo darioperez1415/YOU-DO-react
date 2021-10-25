@@ -1,26 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { getCompletedTodos } from '../api/data/todoData';
-import CompletedTodos from '../components/CompletedTodos';
+import { deleteAnyTodo, getTodos } from '../api/data/todoData';
 
 export default function Completed() {
   const [completedTodos, setCompletedTodos] = useState([]);
 
   useEffect(() => {
-    getCompletedTodos().then(setCompletedTodos);
+    getTodos(true).then(setCompletedTodos);
   }, []);
+
+  const handleClick = (key) => {
+    deleteAnyTodo(key).then(setCompletedTodos);
+  };
 
   return (
     <div>
       {completedTodos.map((completedTodo) => (
         <div
-          key={completedTodo.firebaseKey}
-          className="d-flex justify-content-between alert alert-light"
+          className="alert alert-light"
           role="alert"
+          key={completedTodo.firebaseKey}
         >
-          <CompletedTodos
-            completedTodo={completedTodo}
-            setCompletedTodos={setCompletedTodos}
-          />
+          {completedTodo.name}
+          <button
+            onClick={() => handleClick(completedTodo.firebaseKey)}
+            className="btn btn-danger"
+            type="button"
+          >
+            DELETE
+          </button>
         </div>
       ))}
     </div>
